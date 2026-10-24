@@ -202,3 +202,6 @@ html[data-theme="light"] .code-block { background: #e8f6ea; }
   .workspace { padding-left: 14px; padding-right: 14px; }
   .welcome, .composer-area { max-width: none; }
 }
+
+/* Ensure the HTML hidden attribute wins over the modal display rule. */
+.modal-backdrop[hidden] { display: none !important; }
