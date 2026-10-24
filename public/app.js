@@ -268,7 +268,38 @@ function wireEvents() {
   els.search.addEventListener('input', renderConversations); $('#clear-search').addEventListener('click', () => { els.search.value = ''; renderConversations(); });
   document.addEventListener('click', async event => {
     const conversation = event.target.closest('[data-conversation-id]'); if (conversation && !event.target.closest('[data-menu-id]')) return loadConversation(conversation.dataset.conversationId);
-    const menu = event.target.closest('[data-menu-id]'); if (menu) { const id = menu.dataset.menuId; const action = window.prompt('Type rename, move, archive, export, or delete'); if (action === 'delete') return deleteConversation(id); if (action === 'archive') return archiveConversation(id); if (action === 'export') return exportConversation(id); if (action === 'move') { const options = state.projects.map(project => `${project.name}=${project.id}`).join(', '); const picked = window.prompt(`Enter a project name, or blank to remove. Available: ${options}`); const project = state.projects.find(value => value.name.toLowerCase() === picked?.trim().toLowerCase()); const item = state.conversations.find(value => value.id === id); item.projectId = project?.id || null; await api(`/api/conversations/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ projectId: item.projectId }) }); renderConversations(); renderProjects(); } if (action === 'rename') { const next = window.prompt('New conversation name'); if (next) { const item = state.conversations.find(value => value.id === id); item.title = next.trim(); await api(`/api/conversations/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ title: item.title })); renderConversations(); renderConversation(); } } }
+    const menu = event.target.closest('[data-menu-id]');
+    if (menu) {
+      const id = menu.dataset.menuId;
+      const action = window.prompt('Type rename, move, archive, export, or delete');
+      if (action === 'delete') return deleteConversation(id);
+      if (action === 'archive') return archiveConversation(id);
+      if (action === 'export') return exportConversation(id);
+      if (action === 'move') {
+        const options = state.projects.map(project => `${project.name}=${project.id}`).join(', ');
+        const picked = window.prompt(`Enter a project name, or blank to remove. Available: ${options}`);
+        const project = state.projects.find(value => value.name.toLowerCase() === picked?.trim().toLowerCase());
+        const item = state.conversations.find(value => value.id === id);
+        if (item) {
+          item.projectId = project?.id || null;
+          await api(`/api/conversations/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ projectId: item.projectId }) });
+          renderConversations();
+          renderProjects();
+        }
+      }
+      if (action === 'rename') {
+        const next = window.prompt('New conversation name');
+        if (next) {
+          const item = state.conversations.find(value => value.id === id);
+          if (item) {
+            item.title = next.trim();
+            await api(`/api/conversations/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify({ title: item.title }) });
+            renderConversations();
+            renderConversation();
+          }
+        }
+      }
+    }
     const model = event.target.closest('[data-model-id]'); if (model) { state.selectedModel = model.dataset.modelId; localStorage.setItem('orefyspace.model', state.selectedModel); const conversation = currentConversation(); if (conversation) { conversation.model = state.selectedModel; persistConversation(conversation); } renderModels(); closeModal('model-modal'); }
     const copy = event.target.closest('[data-copy-message]'); if (copy) { const message = currentConversation()?.messages[Number(copy.dataset.copyMessage)]; if (message) navigator.clipboard?.writeText(message.content); }
     const code = event.target.closest('[data-copy-code]'); if (code) navigator.clipboard?.writeText(decodeURIComponent(code.dataset.copyCode));
