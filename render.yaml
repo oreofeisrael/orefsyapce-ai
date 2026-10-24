@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: orefyspace-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: OPENROUTER_MODEL
+        value: openrouter/free
+      - key: OPENROUTER_SITE_URL
+        sync: false
+      - key: OPENROUTER_APP_NAME
+        value: Orefyspace AI
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: CLOUDFLARE_API_TOKEN
+        sync: false
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_WORKERS_AI_MODELS
+        sync: false
+      - key: PROVIDER_FALLBACK_CHAIN
+        value: groq:openai/gpt-oss-20b,openrouter:openrouter/free
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: "true"
+      - key: OPENROUTER_TIMEOUT_MS
+        value: "45000"
+      - key: OPENROUTER_MAX_OUTPUT_TOKENS
+        value: "4096"
+      - key: CHAT_RATE_LIMIT
+        value: "30"

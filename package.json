@@ -1,0 +1,17 @@
+{
+  "name": "orefyspace-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Orefyspace AI - a personal AI workspace powered by OpenRouter",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

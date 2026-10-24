@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/conversations.json
+data/projects.json
+data/prompts.json
+public/orefyspace-logo.png
