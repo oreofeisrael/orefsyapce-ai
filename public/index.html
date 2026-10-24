@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#00150B" />
+    <meta name="description" content="Orefyspace AI — a personal AI workspace powered by OpenRouter." />
+    <title>Orefyspace AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar" aria-label="Conversation navigation">
+        <div class="sidebar-top">
+          <div class="brand-lockup">
+            <img class="brand-logo" src="/orefyspace-logo.png" alt="Orefyspace" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
+            <div class="brand-fallback" hidden>
+              <span class="brand-orbit" aria-hidden="true">O</span>
+              <span><strong>Orefyspace</strong><small>BUILD • AUTOMATE • SCALE</small></span>
+            </div>
+          </div>
+          <button class="icon-button sidebar-close" id="close-sidebar" aria-label="Close sidebar">×</button>
+        </div>
+        <button class="new-chat-button" id="new-chat"><span>＋</span> New Chat <kbd>⌘ K</kbd></button>
+        <label class="search-field" for="conversation-search"><span aria-hidden="true">⌕</span><input id="conversation-search" placeholder="Search conversations" /><kbd>⌘ F</kbd></label>
+        <div class="sidebar-tools">
+          <button class="sidebar-action compact" id="open-projects"><span>▦</span> Projects</button>
+          <button class="sidebar-action compact" id="open-prompts"><span>✦</span> Prompt library</button>
+        </div>
+        <div class="history-heading"><span>Recent</span><button class="text-button" id="clear-search">Clear</button></div>
+        <div class="conversation-list" id="conversation-list" aria-live="polite"></div>
+        <div class="sidebar-bottom">
+          <div class="status-row"><span class="status-dot"></span><span id="mode-label">Checking connection</span></div>
+          <button class="sidebar-action" id="open-settings"><span>⚙</span> Settings</button>
+          <div class="profile-row"><div class="avatar">O</div><div><strong>Orefyspace</strong><small>Personal workspace</small></div><span class="more">•••</span></div>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="header-brand">
+            <img class="header-logo" src="/orefyspace-logo.png" alt="Orefyspace" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
+            <div class="header-brand-fallback" hidden><span class="header-mark" aria-hidden="true">◉</span><span><strong>Orefyspace AI</strong><small>BUILD · AUTOMATE · SCALE</small></span></div>
+          </div>
+          <div class="topbar-title" id="topbar-title">New conversation</div>
+          <div class="topbar-actions"><button class="icon-button menu-button" id="open-sidebar" aria-label="Open workspace menu">◧</button><button class="icon-button" id="top-settings" aria-label="Open settings">⚙</button></div>
+        </header>
+
+        <section class="workspace" id="workspace">
+          <div class="welcome" id="welcome-state">
+            <div class="welcome-heading"><span class="spark">✧</span><h1>What are we building today?</h1><span class="demo-pill" id="demo-pill" hidden>Demo mode</span></div>
+            <p>Your ideas. Your models. Your AI workspace.</p>
+            <div class="prompt-grid">
+              <button class="prompt-card" data-prompt="Help me build this idea into a practical, maintainable plan."><span class="prompt-icon">↗</span><span class="prompt-copy"><strong>Build something</strong><small>Turn an idea into a clear next step.</small></span></button>
+              <button class="prompt-card" data-prompt="Write a precise prompt for the outcome I want to achieve."><span class="prompt-icon">⌘</span><span class="prompt-copy"><strong>Write a prompt</strong><small>Give your models better direction.</small></span></button>
+              <button class="prompt-card" data-prompt="Design an automation workflow that saves time and reduces manual work."><span class="prompt-icon">⟳</span><span class="prompt-copy"><strong>Automate a workflow</strong><small>Connect the steps and remove friction.</small></span></button>
+              <button class="prompt-card" data-prompt="Analyse this problem honestly, identify the root cause, and recommend the best path forward."><span class="prompt-icon">◎</span><span class="prompt-copy"><strong>Analyse a problem</strong><small>Get a clear answer without the fluff.</small></span></button>
+            </div>
+          </div>
+
+          <div class="messages" id="messages" hidden></div>
+
+          <div class="composer-area">
+            <div class="error-banner" id="error-banner" hidden><span id="error-message"></span><button type="button" id="retry-button" hidden>Retry</button></div>
+            <form class="composer" id="composer">
+              <textarea id="prompt-input" rows="1" placeholder="Ask anything, write a prompt, or build something amazing..." aria-label="Message Orefyspace AI"></textarea>
+              <div class="composer-toolbar">
+                <div class="composer-left"><button type="button" class="composer-control" id="attach-button"><span>📎</span> Attach</button><input id="file-input" type="file" hidden multiple /><button type="button" class="composer-control" id="model-button"><span>☷</span><span id="selected-model-label">Loading models</span><span class="chevron">⌄</span></button></div>
+                <div class="composer-right"><span class="shortcut-hint">Enter to send · Shift + Enter for new line</span><button class="send-button" id="send-button" type="submit" aria-label="Send message">↑</button></div>
+              </div>
+            </form>
+            <div class="composer-note"><span aria-hidden="true">◉</span> Your workspace. Your control.</div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="model-modal" hidden><section class="modal model-modal" role="dialog" aria-modal="true" aria-labelledby="model-title"><div class="modal-header"><div><span class="eyebrow">Model library</span><h2 id="model-title">Choose your model</h2><p class="modal-subtitle">Pricing and context limits vary by model and provider.</p></div><button class="icon-button" data-close-modal="model-modal" aria-label="Close model picker">×</button></div><div class="modal-filters"><input id="model-search" placeholder="Search model names or IDs" aria-label="Search models" /><select id="model-provider"><option value="all">All providers</option></select><select id="model-capability"><option value="all">All capabilities</option><option value="vision">Vision</option><option value="reasoning">Reasoning</option></select></div><div class="model-list" id="model-list"></div></section></div>
+
+    <div class="modal-backdrop" id="projects-modal" hidden><section class="modal library-modal" role="dialog" aria-modal="true" aria-labelledby="projects-title"><div class="modal-header"><div><span class="eyebrow">Workspace structure</span><h2 id="projects-title">Projects</h2><p class="modal-subtitle">Group conversations into focused workspaces.</p></div><button class="icon-button" data-close-modal="projects-modal" aria-label="Close projects">×</button></div><form class="inline-form" id="project-form"><input id="project-name" placeholder="New project name" maxlength="80" required /><input id="project-description" placeholder="Short description (optional)" maxlength="240" /><button class="button-primary" type="submit">Create</button></form><div class="library-list" id="project-list"></div></section></div>
+
+    <div class="modal-backdrop" id="prompts-modal" hidden><section class="modal library-modal" role="dialog" aria-modal="true" aria-labelledby="prompts-title"><div class="modal-header"><div><span class="eyebrow">Prompt workspace</span><h2 id="prompts-title">Saved prompts</h2><p class="modal-subtitle">Insert reusable instructions directly into the composer.</p></div><button class="icon-button" data-close-modal="prompts-modal" aria-label="Close prompt library">×</button></div><form class="prompt-form" id="prompt-form"><div class="form-row"><input id="prompt-title" placeholder="Prompt title" maxlength="120" required /><input id="prompt-category" placeholder="Category e.g. Coding" maxlength="40" /></div><textarea id="prompt-content" placeholder="Write the reusable prompt..." maxlength="20000" required></textarea><button class="button-primary" type="submit">Save prompt</button></form><div class="library-toolbar"><input id="prompt-search" placeholder="Search saved prompts" aria-label="Search saved prompts" /><select id="prompt-category-filter"><option value="all">All categories</option></select></div><div class="library-list" id="prompt-list"></div></section></div>
+
+    <div class="modal-backdrop" id="settings-modal" hidden><section class="modal settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title"><div class="modal-header"><div><span class="eyebrow">Workspace controls</span><h2 id="settings-title">Settings</h2></div><button class="icon-button" data-close-modal="settings-modal" aria-label="Close settings">×</button></div><div class="settings-body"><label class="setting-row"><span><strong>Default model</strong><small>Use this model for new conversations.</small></span><select id="default-model-setting"></select></label><label class="setting-row"><span><strong>Response density</strong><small>How much context should answers include?</small></span><select id="response-density"><option value="balanced">Balanced</option><option value="concise">Concise</option><option value="detailed">Detailed</option></select></label><label class="setting-row"><span><strong>Theme</strong><small>Orefyspace is designed dark-first.</small></span><select id="theme-setting"><option value="dark">Dark</option><option value="light">Light</option></select></label><div class="settings-footer"><span id="settings-status">Changes save automatically.</span><button class="button-primary" data-close-modal="settings-modal">Done</button></div></div></section></div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
